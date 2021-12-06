@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <!-- CSS only -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+
+  <title>Deputados do Estado de Goias</title>
+</head>
+
+
+
+<%- include('parts/nav') %>
+
+  <!--
+ - O campo url deputado é composto pela junção da string  https://www.camara.leg.br/deputados/ com id da tabela DEPUTADO.
+ - O campo foto deputado é composto pela intersecção a frente: https://www.camara.leg.br/internet/deputado/bandep/{id deputado}.jpg
+-->
+
+
+  <div id="accordion">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+          <button class="btn btn-link text-danger" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
+            aria-controls="collapseOne">
+            56ª LEGISLATURA (2019-2020)
+          </button>
+        </h5>
+      </div>
+
+      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+          <table class="table table-striped ">
+            <thead>
+              <tr class="table-danger">
+                <th scope="col" class="text-center">Deputado</th>
+                <th scope="col" class="text-center">Informações</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <% deputados.forEach((deputado)=> { %>
+                <% if (deputado.idLegislatura==56 ) { %>
+                  <tr>
+                    <td scope="row" class="text-center"><img
+                        src="https://www.camara.leg.br/internet/deputado/bandep/<%= deputado.id %>.jpg" width="150"
+                        height="150" class="img-fluid  img-thumbnail text-center"
+                        alt="Foto do deputado <%= deputado.nome %> "></td>
+                    <td scope="row">
+                      <p><b>Nome:</b>
+                        <%= deputado.nome %>
+                      </p>
+                      <p><b>Genêro:</b>
+                        <%= deputado.sexo =='M'? "Masculino":"Feminino" %>
+                      </p>
+                      <p><b>Sigla do Partido: </b>
+                        <%= deputado.siglaPartido %>
+                      </p>
+                      <!--
+                    56ª LEGISLATURA (2019-2023)
+                    55ª Legislatura (2015-2019)
+                -->
+                      <p><b>Legislatura: </b>
+                        56ª LEGISLATURA (2019-2020)
+                      </p>
+                      <p><b>Email: </b>
+                        <%= deputado.email !="" ? deputado.email : "Sem Email" %>
+                      </p>
+                      <p><a href="https://www.camara.leg.br/deputados/<%= deputado.id %>" target="_blank">Site na
+                          câmara</a></p>
+                    </td>
+                  </tr>
+                  <% } %>
+
+
+                    <% }) %>
+
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="headingTwo">
+        <h5 class="mb-0">
+          <button class="btn btn-link text-danger" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+            aria-controls="collapseTwo">
+            55ª LEGISLATURA (2015-2018)
+          </button>
+        </h5>
+      </div>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+        <div class="card-body">
+          <table class="table table-striped ">
+            <thead>
+              <tr class="table-danger">
+                <th scope="col" class="text-center">Deputado</th>
+                <th scope="col" class="text-center">Informações</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <% deputados.forEach((deputado)=> { %>
+                <% if (deputado.idLegislatura==55 ) { %>
+                  <tr>
+                    <td scope="row" class="text-center"><img
+                        src="https://www.camara.leg.br/internet/deputado/bandep/<%= deputado.id %>.jpg" width="150"
+                        height="150" class="img-fluid  img-thumbnail text-center"
+                        alt="Foto do deputado <%= deputado.nome %> "></td>
+                    <td scope="row">
+                      <p><b>Nome:</b>
+                        <%= deputado.nome %>
+                      </p>
+                      <p><b>Genêro:</b>
+                        <%= deputado.sexo =='M'? "Masculino":"Feminino" %>
+                      </p>
+                      <p><b>Sigla do Partido: </b>
+                        <%= deputado.siglaPartido %>
+                      </p>
+                      <!--
+                    56ª LEGISLATURA (2019-2023)
+                    55ª Legislatura (2015-2019)
+                -->
+                      <p><b>Legislatura: </b>
+                        55ª LEGISLATURA (2015-2018)
+                      </p>
+                      <p><b>Email: </b>
+                        <%= deputado.email !="" ? deputado.email : "Sem Email" %>
+                      </p>
+                      <p><a href="https://www.camara.leg.br/deputados/<%= deputado.id %>" target="_blank">Site na
+                          câmara</a></p>
+                    </td>
+                  </tr>
+                  <% } %>
+
+
+                    <% }) %>
+
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+</html>
+<!--
+
+  
+-->

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <title>Proposições do Estado de Goiás</title>
+</head>
+
+<style>
+  body {
+    background-image: url('https://www.camara.leg.br/tema/assets/images/foto-historica-28.jpg');
+
+  }
+</style>
+
+<body>
+
+  <%- include('parts/nav') %>
+    <br>
+    <form class=" mx-auto mb-3" style="width: 75%;">
+      <div class="form-group">
+        <select class="form-control mb-3" id="deputado">
+          <option value="" selected>Escolha um Deputado</option>
+          <% deputados.forEach((deputado)=> { %>
+
+            <option value="<%=deputado.nome%>">
+              <%=deputado.nome.toUpperCase()%>
+
+            </option>
+
+
+            <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <select class="form-control mb-3" id="bancada">
+          <option value="" selected>Bancadas de Goiás</option>
+
+          <option value="&idDeputadoAutor=16059&idDeputadoAutor=166402">Feminina</option>
+
+
+        </select>
+      </div>
+      <div class="form-group">
+        <select class="form-control " id="ano">
+          <option selected value="">Escolha o ano</option>
+          <% for(i=2015; i<=2020; i++){%>
+
+            <option value="<%= i %>">
+              <%= i %>
+            </option>
+
+
+            <% } %>
+        </select>
+      </div>
+      <div class="form-group">
+        <select class="form-control" id="tema">
+          <option value="" selected>Escolha um tema</option>
+          <% temas.forEach((tema)=> { %>
+
+            <option value="<%=tema.id%>">
+              <%= tema.nome %>
+            </option>
+
+
+            <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <select class="form-control " id="partido">
+          <option value="" selected>Escolha um partido</option>
+          <% partidos.forEach((partido)=> { %>
+
+            <option value="<%= partido.sigla %> ">
+              <%= partido.sigla + " - " + partido.nome%>
+            </option>
+
+
+            <% }) %>
+        </select>
+      </div>
+      <div class="form-group">
+        <select required class="form-control " id="tipoLei">
+          <option value="&siglaTipo=PL&siglaTipo=MPV" selected>Escolha o tipo</option>
+          <option value="PL">PL - Projeito de Lei</option>
+          <option value="MPV">MPV - Medida Provisório</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Palavras Chaves</span>
+          </div>
+          <input id="keyword1" type="text" class="form-control">
+          <input id="keyword2" type="text" class="form-control">
+          <input id="keyword3" type="text" class="form-control">
+        </div>
+      </div>
+
+
+      <button type="button" onclick=prop() class="btn btn-danger" data-toggle="modal"
+        data-target=".bd-example-modal-xl">Pesquisar</button>
+
+
+
+
+    </form>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header bg-danger">
+            <h5 class="modal-title text-light" id="exampleModalLabel">Proposições</h5>
+            <h5 class="text-light" id="qtdPropo"></h5>
+            <a href="./"><button type="button" class="close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </a>
+          </div>
+          <div class="modal-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Cod</th>
+                  <th scope="col">Ementa</th>
+                  <th scope="col">Cod Tipo e Tipo</th>
+                  <th scope="col">Número/ANO</th>
+                  <th scope="col">Link Proposição</LInk>
+                  </th>
+                </tr>
+              </thead>
+              <tbody id="corpoTabela">
+
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+
+            <a href="./" type="button" class="btn btn-danger">Fechar</a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+    <script>
+
+
+
+      function prop() {
+
+
+
+        var deputado = document.getElementById("deputado").value;
+        var ano = document.getElementById("ano").value;
+        var tema = document.getElementById("tema").value;
+        var partido = document.getElementById("partido").value;
+        var tipo = document.getElementById("tipoLei").value;
+        var key1 = document.getElementById("keyword1").value;
+        var key2 = document.getElementById("keyword2").value;
+        var key3 = document.getElementById("keyword3").value;
+        var bancada = document.getElementById("bancada").value;
+
+       
+        
+        url = `https://dadosabertos.camara.leg.br/api/v2/proposicoes?${bancada != "" ? bancada :"" }${tema != "" ? "&codTema=" + tema : ""}${tipo != "" ? "&siglaTipo=" + tipo : ""}${ano != "" ? "&ano=" + ano : ""}${deputado != "" ? "&autor=" + deputado : ""}${partido != "" ? "&siglaPartidoAutor=" + partido : ""}${key1 != "" ? "&keywords=" + key1 : ""}${key2 != "" ? "&keywords=" + key2 : ""}${key3 != "" ? "&keywords=" + key3 : ""}&siglaUfAutor=GO&dataInicio=2015-01-01&dataFim=2020-12-31&dataApresentacaoInicio=2015-01-01&dataApresentacaoFim=2020-12-31&ordem=ASC&ordenarPor=ano`;
+        var tabela = $("#corpoTabela");
+        var qtdPropo = $("#qtdPropo");
+
+        //https://dadosabertos.camara.leg.br/api/v2/proposicoes?siglaTipo=PL&ano=2015&autor=jose&siglaPartidoAutor=pt&keywords=sus&ordem=ASC&ordenarPor=id
+
+        var corpoResposta;
+        var dados;
+        var req = new XMLHttpRequest();
+
+
+        req.open("GET", url);
+        req.onreadystatechange = function (evt) {
+          if (req.readyState === req.DONE &&
+            req.status >= 200 && req.status < 300) {
+            // A requisição foi respondida com sucesso.
+            var qtd = req.getResponseHeader("x-total-count");
+            qtdPropo.empty().append( qtd == "0" ? "Quantidade de Proposições: Nenhum Resultado Encontrado": "Quantidade de Proposições: " +  qtd);
+            corpoResposta = JSON.parse(req.responseText);
+            dados = corpoResposta.dados;
+
+            dados.forEach(prop => {
+
+              tabela.append(`<tr>
+              <td>${prop.id}</td>
+              <td>${prop.ementa}</td>
+              <td>${prop.codTipo + "/" + prop.siglaTipo}</td>
+              <td>${prop.numero}/${prop.ano}</td>
+              <td><a href="https://www.camara.leg.br/proposicoesWeb/fichadetramitacao?idProposicao=${prop.id}" target="_blank">Link Proposição</a></td>
+            </tr>`)
+            });
+
+            for (var i = 0; i < corpoResposta.links.length; i++) {
+
+              if (corpoResposta.links[i].rel === "next") {
+
+                prop(corpoResposta.links[i].href)
+                return
+                //setAttribute("onclick()",`prop(${corpoResposta.links[i].href})`)
+                //<a id="proxLink" href=""><button type="button" class="btn btn-outline-danger">Próxima página</button></a>
+              }
+            }
+          }
+        }
+        req.setRequestHeader("Accept", "application/json");
+        req.send();
+
+
+      }
+
+
+    </script>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
+
+<!--
+
+    <button onclick="myFunction()">Click me</button>
+
+  <div id="demo"></div>
+  
+  <script>
+  function myFunction() {
+    
+    var demo = $('#demo');
+    demo.append('<p> teste </p>');
+    demo.append(document.getElementById("deputado").value);
+
+  }
+  `<tr>
+              <td>${prop.id}</td>
+              <td>${prop.ementa}</td>
+              <td>${prop.siglaTipo}</td>
+              <td>${prop.codTipo}</td>
+              <td>${prop.numero +"/"+ prop.ano }</td>
+              <td><a href="< ${prop.uri}">Link Proposição</a></td>
+            </tr>`
+  </script>
+  <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">id</th>
+              <th scope="col">Ementa</th>
+              <th scope="col">Silgla Tipo e Tipo</th>
+              <th scope="col">Cod.Tema e Tema</th>
+              <th scope="col">Número/ANO</th>
+              <th scope="col">Link Proposição</LInk></th>
+            </tr>
+          </thead>
+          <tbody id="corpoTabela">
+       
+          </tbody>
+        </table>
+
+-->
