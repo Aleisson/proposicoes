@@ -1,6 +1,5 @@
 
-
-## 🚀 Tecnologias
+ Tecnologias
 
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
@@ -14,4 +13,4 @@ Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 💻 Projeto
 Esse projeto é o trabalho de conclusão de curso de Caio Aleisson
-aluno de ADS do IFG.S
+aluno de ADS do IFG.
